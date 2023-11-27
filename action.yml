@@ -1,0 +1,22 @@
+name: "GitHub Pull Request Owner Checker for Xepelin"
+description: "A GitHub Action to review if the PR owner is authorized to trigger GitHub Actions on target repo"
+author: "@jtapia-xepelin"
+inputs:
+  prNum:
+    description: "Pull Request Number"
+    required: true
+  targetOrg:
+    description: "Target organization. Defaults to Xepelin"
+    default: "xepelinapp"
+    required: false
+  targetTeam:
+    description: "Target team to check members of, in order to determine if PR owner is a valid owner"
+    default: "data-crowd"
+    required: false
+  targetRepo:
+    description: "Target repository to check Pull Requests from"
+    default: "dbt-dw-data-team"
+    required: false
+runs:
+  using: "docker"
+  image: "Dockerfile"
