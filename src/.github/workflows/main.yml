@@ -13,7 +13,7 @@ jobs:
       with:
         ref: main
 
-    - uses: jtapia-xepelin/pr_owner_checker@main
+    - uses: xepelinapp/datacrowd-pr_owner_checker@main
       with:
         prNum: ${{ github.event.pull_request.number }}
         targetOrg: "xepelinapp"
