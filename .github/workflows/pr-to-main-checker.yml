@@ -1,0 +1,20 @@
+name: Check PR Owner Team
+
+on:
+    workflow_dispatch:
+    pull_request_target:
+      types: [opened, synchronize, reopened]
+      branches:
+        - "main"
+
+jobs:
+  check-owner-team:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Get PR author
+        id: pr_author
+        run: echo "::set-output name=author::$(jq -r '.pull_request.user.login' $GITHUB_EVENT_PATH)"
