@@ -11,15 +11,14 @@ jobs:
   my_job:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/github-script@v6
+      - uses: actions/github-script@v7
         with:
           script: |
-            // If user is member of my_team team do nothing else do something
-            // See: https://octokit.github.io/rest.js/v18#teams
-            const creator = context.payload.sender.login
+            const creator = context.payload.sender.login;
+            console.log(creator);
             const result = await github.rest.teams.getMembershipForUserInOrg({
               org: context.repo.owner,
               team_slug: 'data-crowd'
               username: creator
-            })
-            console.log(creator, result)
+            });
+            console.log(creator, result);
