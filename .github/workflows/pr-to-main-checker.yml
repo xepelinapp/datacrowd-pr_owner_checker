@@ -25,5 +25,13 @@ jobs:
               });
               console.log(creator, result);
             } catch (error) {
+              const pullRequestNumber = context.payload.pull_request.number;
+              const owner = context.repo.owner;
+              const repo = context.repo.repo;await github.rest.issues.createComment({
+                owner,
+                repo,
+                issue_number: pullRequestNumber,
+                body: 'Thank you for your contribution! We are closing this pull request as per our workflow.'
+              });
               console.log(error)
             };
