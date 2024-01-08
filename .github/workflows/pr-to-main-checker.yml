@@ -16,9 +16,3 @@ jobs:
           script: |
             const creator = context.payload.sender.login;
             console.log(creator);
-            const result = await github.rest.teams.getMembershipForUserInOrg({
-              org: context.repo.owner,
-              team_slug: 'data-crowd'
-              username: creator
-            });
-            console.log(creator, result);
