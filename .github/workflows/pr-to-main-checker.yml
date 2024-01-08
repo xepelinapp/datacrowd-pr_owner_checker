@@ -17,9 +17,13 @@ jobs:
           script: |
             const creator = context.payload.sender.login;
             console.log(creator);
-            const result = await github.rest.teams.getMembershipForUserInOrg({
-              org: 'xepelinapp',
-              team_slug: 'data-bi',
-              username: creator
-            });
-            console.log(creator, result);
+            try {
+              const result = await github.rest.teams.getMembershipForUserInOrg({
+                org: 'xepelinapp',
+                team_slug: 'data-bi',
+                username: creator
+              });
+              console.log(creator, result);
+            } catch (error) {
+              console.log(error)
+            };
