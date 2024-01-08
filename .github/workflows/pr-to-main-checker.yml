@@ -1,20 +1,27 @@
 name: Check PR Owner Team
 
 on:
-    workflow_dispatch:
-    pull_request_target:
-      types: [opened, synchronize, reopened]
-      branches:
-        - "main"
+  workflow_dispatch:
+  pull_request_target:
+    types: [opened, synchronize, reopened]
+    branches:
+      - "main"
 
 jobs:
   check-owner-team:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check out code
-        uses: actions/checkout@v2
+        - name: Check and Close PR
+          uses: actions/github-script@v7
+          id: process
+          with:
+            script: |
+              const whitelist = ['user1', 'user2'];
+              const username = context.payload.pull_request.user.login;
+              const baseBranch = context.payload.pull_request.base.ref;
+              return username
+            result-encoding: string
+        - name: Print result
+          run: echo "${{steps.process.output.result}}"
 
-      - name: Get PR author
-        id: pr_author
-        run: echo "::set-output name=author::$(jq -r '.pull_request.user.login' $GITHUB_EVENT_PATH)"
