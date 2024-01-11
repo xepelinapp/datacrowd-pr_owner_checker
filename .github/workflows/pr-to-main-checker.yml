@@ -20,7 +20,7 @@ jobs:
             try {
               const result = await github.rest.teams.getMembershipForUserInOrg({
                 org: 'xepelinapp',
-                team_slug: 'data-bi',
+                team_slug: 'data-crowd',
                 username: creator
               });
               console.log(creator, result);
