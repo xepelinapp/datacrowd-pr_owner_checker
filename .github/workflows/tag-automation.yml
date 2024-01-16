@@ -17,11 +17,12 @@ jobs:
     - name: Check Team Membership
       id: check_team
       run: |
-        teamName="data-crowd"
+        teamName="data-bi"
         isMember=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/teams/${teamName}/memberships/${{ github.actor }}")
         echo "::set-output name=is_member::$(echo $isMember | jq '.state == "active"')"
 
     - name: Add Label
+      if: steps.check_team.outputs.is_member == 'true'
       uses: actions/labeler@v4
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
