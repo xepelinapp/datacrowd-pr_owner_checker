@@ -19,7 +19,7 @@ jobs:
       run: |
         teamName="data-crowd"
         isMember=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/teams/${teamName}/memberships/${{ github.actor }}")
-        echo "name=is_member" >>$GITHUB_OUTPUT::$(echo $isMember | jq '.state == "active"')
+        echo "is_member=$(echo $isMember | jq '.state == "active"')" >>$GITHUB_OUTPUT
 
     - name: Add Label
       if: steps.check_team.outputs.is_member == 'true'
