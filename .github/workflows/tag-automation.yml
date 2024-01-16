@@ -1,0 +1,26 @@
+name: Add Label to Pull Request
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+
+jobs:
+  add-label:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check Team Membership
+      id: check_team
+      run: |
+        teamName="data-crowd"
+        isMember=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/teams/${teamName}/memberships/${{ github.actor }}")
+        echo "::set-output name=is_member::$(echo $isMember | jq '.state == "active"')"
+
+    - name: Add Label
+      uses: actions/labeler@v5
+      with:
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        config-path: .github/labeler.yml
+  
