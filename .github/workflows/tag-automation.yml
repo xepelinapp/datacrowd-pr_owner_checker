@@ -19,7 +19,7 @@ jobs:
         echo "::set-output name=is_member::$(echo $isMember | jq '.state == "active"')"
 
     - name: Add Label
-      uses: actions/labeler@v5
+      uses: actions/labeler@v4
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
         config-path: '.github/labeler.yml'
