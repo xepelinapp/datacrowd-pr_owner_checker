@@ -1,2 +1,2 @@
 BI:
-  - if: steps.check_team.outputs.is_member == 'true'
+  '*'
