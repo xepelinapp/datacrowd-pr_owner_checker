@@ -22,7 +22,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.CUSTOM_GA_TOKEN }}
 
       - name: Add Label
-        if: ${{ steps.checkUserMember.outputs.isTeamMember == 'false' }}
+        if: ${{ steps.checkUserMember.outputs.isTeamMember == 'true' }}
         uses: actions/labeler@v5
         with:
           repo-token: ${{ secrets.CUSTOM_GA_TOKEN }}
