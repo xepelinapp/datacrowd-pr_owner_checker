@@ -23,6 +23,7 @@ jobs:
           else
             MEMBER=false
           fi
+          echo "$MEMBER"
 
       - name: Add Label
         if: ${{ steps.check-membership-and-add-label.outputs.MEMBER == 'true' }}
