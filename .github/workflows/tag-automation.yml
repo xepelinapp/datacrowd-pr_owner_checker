@@ -22,7 +22,7 @@ jobs:
               username: creator
             });
             console.log(creator, result);
-
+            return result;
 
       - name: Add Label
         if: ${{ steps.checkUserMember.outputs.result.data.state == 'active' }}
