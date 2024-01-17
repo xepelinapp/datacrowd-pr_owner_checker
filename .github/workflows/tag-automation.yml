@@ -12,17 +12,28 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Check Team Membership
-      id: check_team
-      run: |
-        isMember=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/orgs/xepelinapp/teams/data-crowd/memberships/${{ github.actor }}")
-        echo "API Response: $isMember"
-        echo "is_member=$(echo $isMember | jq '.state == "active"')" >>$GITHUB_ENV
+      - name: Checkout Repository
+        uses: actions/checkout@v2
 
-    - name: Add Label
-      if: ${{ env.is_member }} == "true"
-      uses: actions/labeler@v5
-      with:
-        repo-token: ${{ secrets.GITHUB_TOKEN }}
-        configuration-path: .github/labeler.yml
+      - name: Check Team Membership
+        run: |
+          ORG=xepelinapp
+          TEAM=data-crowd
+
+          TEAM_ID=$(curl -s -H "Authorization: token $GITHUB_TOKEN" https://api.github.com/orgs/$ORG/teams | jq -r ".[] | select(.slug == \"$TEAM\") | .id")
+
+          MEMBERS=$(curl -s -H "Authorization: token $GITHUB_TOKEN" https://api.github.com/teams/$TEAM_ID/members | jq -r ".[].login")
+
+          if [[ "$MEMBERS" == *"$GITHUB_ACTOR"* ]]; then
+            MEMBER=true
+          else
+            MEMBER=false
+          fi
+
+      - name: Add Label
+        if: ${{ steps.check-membership-and-add-label.outputs.MEMBER == 'true' }}
+        uses: actions/labeler@v5
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          configuration-path: .github/labeler.yml
   
