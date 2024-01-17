@@ -6,6 +6,9 @@ on:
 
 jobs:
   add-label:
+    permissions:
+      contents: read
+      pull-requests: write
     runs-on: ubuntu-latest
 
     steps:
@@ -13,12 +16,12 @@ jobs:
       id: check_team
       run: |
         isMember=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/teams/data-crowd/memberships/${{ github.actor }}")
-        echo "is_member=$(echo $isMember | jq '.state == "active"')" >>$GITHUB_ENV       
-        
+        echo "is_member=$(echo $isMember | jq '.state == "active"')" >>$GITHUB_ENV
+
     - name: Add Label
       if: ${{ env.is_member }} == 'true'
       uses: actions/labeler@v4
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
-        configuration-path: .github/labeler.yml
+        config-path: .github/labeler.yml
   
