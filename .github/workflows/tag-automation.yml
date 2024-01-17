@@ -21,7 +21,7 @@ jobs:
 
     - name: Add Label
       if: ${{ env.is_member }} == "true"
-      uses: actions/labeler@v4
+      uses: actions/labeler@v5
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
         configuration-path: .github/labeler.yml
