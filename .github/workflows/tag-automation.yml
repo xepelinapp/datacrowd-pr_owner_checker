@@ -2,9 +2,7 @@ name: Add Label to Pull Request
 
 on:
   pull_request:
-    types:
-      - opened
-      - synchronize
+    types: [opened, synchronize, reopened]
 
 jobs:
   add-label:
@@ -14,13 +12,15 @@ jobs:
     - name: Check Team Membership
       id: check_team
       run: |
-        teamName="data-crowd"
-        isMember=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/teams/${teamName}/memberships/${{ github.actor }}")
-        echo "::set-output name=is_member::$(echo $isMember | jq '.state == "active"')"
-
+        isMember=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/teams/data-crowd/memberships/${{ github.actor }}")
+        echo "is_member=$(echo $isMember | jq '.state == "active"')" >>$GITHUB_ENV
+       #echo "::set-output name=is_member::$(echo $isMember | jq '.state == "active"')"
+        
+        
     - name: Add Label
-      uses: actions/labeler@v5
+      if: ${{ env.is_member }} == 'true'
+      uses: actions/labeler@v4
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
-        config-path: '.github/labeler.yml'
+        configuration-path: .github/labeler.yml
   
