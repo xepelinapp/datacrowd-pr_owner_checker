@@ -23,13 +23,12 @@ jobs:
             console.log(creator, result);
 
 
-     # - name: Add Label
-       # run: |
-         # echo "${{ steps.checkUserMember.outputs.isMember }}"
-       # uses: actions/labeler@v5
-       # with:
-        #  repo-token: ${{ secrets.CUSTOM_GA_TOKEN }}
-         # configuration-path: .github/labeler.yml
+      - name: Add Label
+        if: ${{ steps.checkUserMember.outputs.status == 'active' }}
+        uses: actions/labeler@v5
+        with:
+          repo-token: ${{ secrets.CUSTOM_GA_TOKEN }}
+          configuration-path: .github/labeler.yml
 
 
   
