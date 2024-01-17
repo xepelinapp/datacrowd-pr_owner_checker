@@ -20,7 +20,7 @@ jobs:
 
       - name: Add Label
         run: |
-          echo "$isTeamMember"
+          echo "${{ steps.checkUserMember.outputs.isMember }}"
        # uses: actions/labeler@v5
        # with:
         #  repo-token: ${{ secrets.CUSTOM_GA_TOKEN }}
