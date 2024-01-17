@@ -15,7 +15,7 @@ jobs:
     - name: Check Team Membership
       id: check_team
       run: |
-        isMember=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/teams/data-crowd/memberships/${{ github.actor }}")
+        isMember=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/orgs/xepelin/teams/data-crowd/memberships/${{ github.actor }}")
         echo "API Response: $isMember"
         echo "is_member=$(echo $isMember | jq '.state == "active"')" >>$GITHUB_ENV
 
