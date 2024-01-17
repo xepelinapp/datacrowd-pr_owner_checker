@@ -25,7 +25,7 @@ jobs:
 
 
       - name: Add Label
-        if: ${{ steps.checkUserMember.outputs.state == 'active' }}
+        if: ${{ steps.checkUserMember.outputs.data.state == 'active' }}
         uses: actions/labeler@v5
         with:
           repo-token: ${{ secrets.CUSTOM_GA_TOKEN }}
