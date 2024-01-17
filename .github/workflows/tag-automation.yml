@@ -14,7 +14,7 @@ jobs:
     steps:
       - name: Check Team Membership
         run: |
-          organization="xepelin"
+          organization="xepelinapp"
           team="data-crowd"
           user="${{ github.event.pull_request.user.login }}"
 
