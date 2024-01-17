@@ -20,7 +20,7 @@ jobs:
         echo "is_member=$(echo $isMember | jq '.state == "active"')" >>$GITHUB_ENV
 
     - name: Add Label
-      if: ${{ env.is_member }} == 'true'
+      if: ${{ env.is_member }} == "true"
       uses: actions/labeler@v4
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
