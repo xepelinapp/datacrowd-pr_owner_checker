@@ -6,7 +6,7 @@ on:
 
 jobs:
   add-label:
-    runs-on: [self-hosted, linux, X64, k8s]
+    runs-on: ubuntu-latest
 
     steps:
       - name: Check Team Membership
