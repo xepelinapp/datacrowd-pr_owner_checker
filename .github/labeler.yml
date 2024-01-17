@@ -1,3 +1,4 @@
 BI:
-- changed-files:
-  - any-glob-to-any-file: '**'
+  - if: ${{ env.is_member }} == "true"
+  - changed-files:
+    - any-glob-to-any-file: '**'
