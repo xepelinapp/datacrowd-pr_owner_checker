@@ -14,22 +14,33 @@ jobs:
         with:
           github-token: ${{ secrets.CUSTOM_GA_TOKEN }}
           script: |
-            const creator = context.payload.sender.login;
-            console.log(creator);
-            const result = await github.rest.teams.getMembershipForUserInOrg({
-              org: 'xepelinapp',
-              team_slug: 'data-crowd',
-              username: creator
-            });
-            console.log(creator, result);
-            return result;
+            const teamLabels = {
+              'data-crowd': 'DC',
+              'data-bi': 'BI'
+            }
+            keys = Object.keys(teamLabels)
 
-      - name: Add Label
-        if: ${{ steps.checkUserMember.outputs.result.data.state == 'active' }}
-        uses: actions/labeler@v5
-        with:
-          repo-token: ${{ secrets.CUSTOM_GA_TOKEN }}
-          configuration-path: .github/labeler.yml
+            for (var i = 0; i < keys.length; i++) {
+
+              const creator = context.payload.sender.login;
+              const pullRequestNumber = context.payload.pull_request.number;
+              
+              const result = await github.rest.teams.getMembershipForUserInOrg({
+                org: 'xepelinapp',
+                team_slug: keys[i],
+                username: creator
+              });
+                if (result.data.state === 'active'){
+                  const labelToAdd = teamLabels[keys[i]];
+                  await github.rest.issues.addLabels({
+                    owner: 'xepelinapp',
+                    repo: 'datacrowd-pr_owner_checker',
+                    issue_number: pullRequestNumber,
+                    labels: [labelToAdd]
+                  });
+                }
+              }      
+
 
 
   
