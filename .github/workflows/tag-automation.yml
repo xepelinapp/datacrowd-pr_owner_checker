@@ -15,7 +15,7 @@ jobs:
         with: 
           organization: "xepelinapp"
           team: "data-crowd"
-          user: ${{ github.actor }}
+          username: ${{ github.actor }}
           GITHUB_TOKEN: ${{ secrets.CUSTOM_GA_TOKEN }}
 
       - if: ${{ steps.checkUserMember.outputs.isTeamMember == 'true' }}
