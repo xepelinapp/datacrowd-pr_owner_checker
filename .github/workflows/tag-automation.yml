@@ -12,19 +12,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
       - name: Check Team Membership
         run: |
-          ORG=xepelinapp
-          TEAM=data-crowd
+          organization="xepelin"
+          team="data-crowd"
+          user="${{ github.event.pull_request.user.login }}"
 
-          TEAM_ID=$(curl -s -H "Authorization: token $GITHUB_TOKEN" https://api.github.com/orgs/$ORG/teams | jq -r ".[] | select(.slug == \"$TEAM\") | .id")
-
-          MEMBERS=$(curl -s -H "Authorization: token $GITHUB_TOKEN" https://api.github.com/teams/$TEAM_ID/members | jq -r ".[].login")
-
-          if [[ "$MEMBERS" == *"$GITHUB_ACTOR"* ]]; then
+          if [[ $(curl -sSL "https://api.github.com/orgs/${organization}/teams/${team}/members/${user}" | jq -r '.login') == "${user}" ]]; then
             MEMBER=true
           else
             MEMBER=false
