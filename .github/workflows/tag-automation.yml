@@ -6,11 +6,12 @@ on:
 
 jobs:
   add-label:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, linux, X64, k8s]
 
     steps:
       - uses: actions/github-script@v7
         with:
+          github-token: ${{ secrets.CUSTOM_GA_TOKEN }}
           script: |
             const creator = context.payload.sender.login;
             console.log(creator);
