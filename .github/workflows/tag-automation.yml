@@ -13,22 +13,18 @@ jobs:
 
     steps:
       - name: Check Team Membership
-        run: |
-          organization="xepelinapp"
-          team="data-crowd"
-          user="${{ github.event.pull_request.user.login }}"
-
-          if [[ $(curl -sSL "https://api.github.com/orgs/${organization}/teams/${team}/members/${user}" | jq -r '.login') == "${user}" ]]; then
-            MEMBER=true
-          else
-            MEMBER=false
-          fi
-          echo "$MEMBER"
+        uses: tspascoal/get-user-teams-membership@v3
+        id: checkUserMember
+        with: 
+          organization: "xepelinapp"
+          team: "data-crowd"
+          user: ${{ github.actor }}
+          GITHUB_TOKEN: ${{ secrets.CUSTOM_GA_TOKEN }}
 
       - name: Add Label
-        if: ${{ steps.check-membership-and-add-label.outputs.MEMBER == 'true' }}
+        if: ${{ steps.checkUserMember.outputs.isTeamMember == 'false' }}
         uses: actions/labeler@v5
         with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          repo-token: ${{ secrets.CUSTOM_GA_TOKEN }}
           configuration-path: .github/labeler.yml
   
