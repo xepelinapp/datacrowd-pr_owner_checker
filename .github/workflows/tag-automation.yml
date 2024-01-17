@@ -13,14 +13,18 @@ jobs:
         uses: tspascoal/get-user-teams-membership@v3
         id: checkUserMember
         with: 
-          team: 'data-crowd'
           username: ${{ github.actor }}
+          team: 'data-crowd'
           GITHUB_TOKEN: ${{ secrets.CUSTOM_GA_TOKEN }}
 
-      - if: ${{ steps.checkUserMember.outputs.isTeamMember == 'true' }}
-        name: Add Label
-        uses: actions/labeler@v5
-        with:
-          repo-token: ${{ secrets.CUSTOM_GA_TOKEN }}
-          configuration-path: .github/labeler.yml
+
+      - name: Add Label
+        run: |
+          echo "$isTeamMember"
+       # uses: actions/labeler@v5
+       # with:
+        #  repo-token: ${{ secrets.CUSTOM_GA_TOKEN }}
+         # configuration-path: .github/labeler.yml
+
+
   
