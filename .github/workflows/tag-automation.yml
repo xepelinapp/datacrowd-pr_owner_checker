@@ -27,7 +27,7 @@ jobs:
               try {
                 const result = await github.rest.teams.getMembershipForUserInOrg({
                   org: 'xepelinapp',
-                  team_slug: keys[i],
+                  team_slug: team,
                   username: creator
                 });
                 if (result.data.state === 'active'){
