@@ -37,8 +37,7 @@ jobs:
                     repo: 'datacrowd-pr_owner_checker',
                     issue_number: pullRequestNumber,
                     labels: [labelToAdd]
-                  })
-                };
+                  });
                 } else {
                   console.log(`${creator} is not a member of team ${keys[i]}`);
                 }
