@@ -31,7 +31,7 @@ jobs:
                   username: creator
                 });
                 if (result.data.state === 'active'){
-                  const labelToAdd = teamLabels[keys[i]];
+                  const labelToAdd = teamLabels[team];
                   await github.rest.issues.addLabels({
                     owner: 'xepelinapp',
                     repo: 'datacrowd-pr_owner_checker',
@@ -39,10 +39,10 @@ jobs:
                     labels: [labelToAdd]
                   });
                 } else {
-                  console.log(`${creator} is not a member of team ${keys[i]}`);
+                  console.log(`${creator} is not a member of team ${team}`);
                 }
               } catch (error) {
-                console.error(`Error checking team membership for team ${keys[i]}: ${error.message}`);
+                console.error(`Error checking team membership for team ${team}: ${error.message}`);
               }
             } 
             
