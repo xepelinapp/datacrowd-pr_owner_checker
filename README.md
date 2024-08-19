@@ -1,4 +1,4 @@
-# PR Owner Checker
+# PR  Owner Checker
 
 ## Qué es esto?
 El GHA Owner Checker es una pequeña utilidad en Python que revisa el usuario que envía un PR, y, si **no** es un usuario válido para lanzar un PR hacia ramas protegidas (`devel`, `main`), detiene la acción donde este programa está implementado.

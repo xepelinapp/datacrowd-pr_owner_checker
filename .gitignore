@@ -4,3 +4,4 @@ venv/
 # files
 *.pyc
 *.log
+*.pr-to-main-checker.yml
