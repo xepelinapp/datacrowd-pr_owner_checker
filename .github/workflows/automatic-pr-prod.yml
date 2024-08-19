@@ -14,6 +14,6 @@ jobs:
         with:
             source_branch: "devel"                            # If blank, default: triggered branch
             destination_branch: "main"                        # If blank, default: master
-            pr_title: "DEVEL"                                 # Title of pull request
+            pr_title: "DEVEL"                                 # Title of th pull request
             pr_allow_empty: false                             # Creates pull request even if there are no changes
             github_token: ${{ secrets.CUSTOM_GA_TOKEN }}      # If blank, default: secrets.CUSTOM_GA_TOKEN
