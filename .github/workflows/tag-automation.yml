@@ -2,28 +2,51 @@ name: Add Label to Pull Request
 
 on:
   pull_request:
-    types:
-      - opened
-      - synchronize
+    types: [opened, synchronize, reopened]
 
 jobs:
   add-label:
-    permissions:
-      contents: read
-      pull-requests: write
     runs-on: ubuntu-latest
 
     steps:
-    - name: Check Team Membership
-      id: check_team
-      run: |
-        isMember=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/teams/data-crowd/memberships/${{ github.actor }}")
-        echo "is_member=$(echo $isMember | jq '.state == "active"')" >>$GITHUB_ENV
+      - uses: actions/github-script@v7
+        id: checkUserMember
+        with:
+          github-token: ${{ secrets.CUSTOM_GA_TOKEN }}
+          script: |
+            const teamLabels = {
+              'data-crowd': 'DC',
+              'data-bi': 'BI'
+            }
 
-    - name: Add Label
-      if: ${{ env.is_member }} == 'true'
-      uses: actions/labeler@v4
-      with:
-        repo-token: ${{ secrets.GITHUB_TOKEN }}
-        configuration-path: .github/labeler.yml
+            const keys = Object.keys(teamLabels)
+            const creator = context.payload.sender.login;
+            const pullRequestNumber = context.payload.pull_request.number;
+
+            for (const team of keys) {
+              try {
+                const result = await github.rest.teams.getMembershipForUserInOrg({
+                  org: 'xepelinapp',
+                  team_slug: team,
+                  username: creator
+                });
+                if (result.data.state === 'active'){
+                  const labelToAdd = teamLabels[team];
+                  await github.rest.issues.addLabels({
+                    owner: 'xepelinapp',
+                    repo: 'datacrowd-pr_owner_checker',
+                    issue_number: pullRequestNumber,
+                    labels: [labelToAdd]
+                  });
+                } else {
+                  console.log(`${creator} is not a member of team ${team}`);
+                }
+              } catch (error) {
+                console.error(`Error checking team membership for team ${team}: ${error.message}`);
+              }
+            } 
+            
+
+
+
   
