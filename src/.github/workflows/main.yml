@@ -1,0 +1,23 @@
+name: PR Owner Checker
+on: 
+  pull_request:
+    branches: 
+      - main
+      - devel
+
+jobs:
+  checker:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        ref: main
+
+    - uses: xepelinapp/datacrowd-pr_owner_checker@main
+      with:
+        prNum: ${{ github.event.pull_request.number }}
+        targetOrg: "xepelinapp"
+        targetTeam: "data-crowd"
+        targetRepo: "dbt-dw-data-team"
+      env:
+        GH_TOKEN: ${{ secrets.AUTH_TOKEN }}
