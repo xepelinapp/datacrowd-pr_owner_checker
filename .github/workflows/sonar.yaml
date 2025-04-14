@@ -1,0 +1,48 @@
+name: 🤖 Sonar Check
+
+on:
+  pull_request:
+
+jobs:
+  validations:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Test Unificado
+        run: echo "No hay pruebas para ejecutar en este repo"
+
+      - name: Set Project Key
+        id: set_project_key
+        run: |
+          PROJECT_KEY=$(echo "${{ github.repository }}" | tr '/' '-')
+          echo "PROJECT_KEY=$PROJECT_KEY" >> $GITHUB_OUTPUT
+        shell: bash
+
+      - name: SonarQube Scan
+        uses: sonarsource/sonarqube-scan-action@master
+        with:
+          args: >
+            -Dsonar.organization=${{ secrets.SONAR_ORGANIZATION || 'xepelinapp' }}
+            -Dsonar.projectKey=${{ steps.set_project_key.outputs.PROJECT_KEY }}
+            -Dsonar.python.version=3
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+
+      - name: Tag SonarCloud Project
+        if: github.event_name == 'push'
+        run: |
+          curl -u ${{ secrets.SONAR_TOKEN }}: \
+          -X POST "${{ secrets.SONAR_HOST_URL }}/api/project_tags/set?project=${{ steps.set_project_key.outputs.PROJECT_KEY }}&tags=xforce"
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
